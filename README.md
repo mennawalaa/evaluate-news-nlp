@@ -121,8 +121,9 @@ A great step to take with your finished project would be to deploy it! Unfortuna
        6. npm i -D optimize-css-assets-webpack-plugin terser-webpack-plugin
  2. API call 
     - in function formHandler which handles the event of clicking the submit button the value of the input 
-      is being apended with the user key and the text language using the FormData function to be feed with the url of the api to a post request using fetch 
-    - the API then returns an object containing the ok msg if all parameters of request is fulfilled along   with the agreement of the text wether the text shows agreement or disagreement
+      url is being send to the server side through the post body then being added together with api key to the sentimentanalysis url then feed to fetch function that get the response back from the API and send it to the formHandler js file  
+    - the response is  an object containing the ok msg if all parameters of request is fulfilled along   with the agreement of the text wether the text shows agreement or disagreement,confidence,irony,
+    model and score_tag.
     - the results are then shown on the web page
 
  3. adding styles using scss
@@ -140,7 +141,7 @@ A great step to take with your finished project would be to deploy it! Unfortuna
        3. "test": "jest",
        2. name a _test_ folder 
        3. make a test file for each function to test its functionatily
-       3. 0. checkForName function defined  a found variable with zero value and returned when the function    ends  the test case  checks the return value of the function to be zero
+       3. 0. checkForName function defined  a valid variable with zero value which is set to one of the url is valid and remained zero if the url is invalid ,to test the function an valid url is set to input and the return value of function is compared to 1 to show that the valid input url passes  
        3. 1. formhandler is async function as it uses async await to fetch data from Api
         the test case only checks if the function is defined using toBeDefined() matcher
  5. adding Offline Functionality using service workers
@@ -164,5 +165,29 @@ A great step to take with your finished project would be to deploy it! Unfortuna
       ```
 
  6. Deployment using Netlify
- 6. 0. check the following link for complete steps 
+ 6. 0. check the following link for complete steps
 
+ ## Dependencies
+ all Dependencies are found at the package.json file please make sure to use
+  ```npm install  ``` before starting the project
+##  important files
+-- server->index.js contains all data related to local server driven by node js express library
+--client -> js contain javascripts functions that is responsable for the web page functionatily
+1. formHandler function fires on the submit event makes a post API call to the sentiment analysis and print the results on the page
+2. nameChecker uses regex for url validation if the url is valid the API call at the formHandler is preformed and a valid url alert is shown, if the url is not valid an alert invalid is shown
+3. webpack.dev.js contain module  entry ,output , sass and test loaders ,html(client library for event and api calls functionality),clean and service workers plugins 
+note this config file set the rules for webpack to run in development mode (any update in the code appears immediatly on web page browser ) so its useful for the phase development of the project
+4. webpack.prod.js contain module  entry ,output , sass and test loaders ,html  and service workers plugins
+its used at the end of the development phase to form a dist folder which is a compressed form of the the project that can be runned faster on the browser ,once this folder is formed you are no longer at the development mode which means that the changes done on the code will not appear at the the site unless the dist folder is being rebuild to include those changes because at this phase (production phase) the browser run only the dist folder which have to rebuild after each change so those changes can appear 
+5. test folder contain 2 testing files , a file for each client js file which tests the js function functionality
+6. env used to create environment variable for the API key to use process.env.varname instead of the variable value which is only written at the env file that can be ignored when uploaded to get hup so the api key is kept secret 
+7. views-> index.html contains the html that will run on the browser to form website
+8. src-> index.js contian includes to all files that index.html file will use 
+
+## How to run the project 
+1. you need to start the server using 
+ ```npm run start  ```
+2. to run the project development mode
+ ``` npm run build-dev ```
+3. to run the project in production mode
+ ```npm run build-prod``` 

@@ -1,36 +1,57 @@
+
 async function handleSubmit(event) {
     event.preventDefault()
 
     // check what text was put into the form field
     let formText = document.getElementById('name').value
-    Client.checkForName(formText)
+    let validation = Client.checkForName(formText)
+    if (validation) {
+        alert("valid url!");
+        console.log("::: Form Submitted :::")
+        console.log("ADDING URL OPTION");
+        let data = { url: formText };
+        console.log("data", data);
+        const options = {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            mode: "cors",
+            body: JSON.stringify(data),
 
-    console.log("::: Form Submitted :::")
+        };
+        const tryserver = await fetch('http://localhost:8080/send', options);
 
-    let data = new FormData();
-    data.set('key', "02c9dc63ce00adaf91ac4e4fbf65c872");
-    data.set('txt', formText);
-    data.set('lang', "en");
-    console.log(data.values());
-    let url = "https://api.meaningcloud.com/sentiment-2.1";
-    const requestOptions = {
-        method: 'POST',
-        body: data,
-        redirect: 'follow'
-
+        console.log("before json", tryserver);
+        const receivedData = await tryserver.json()
+        console.log(" after json", receivedData);
+        let start = '<ul>'
+        let end = '</ul>'
+        let elements = [];
+        elements[0] = '<li>' + "agreement: " + receivedData.agreement + '</li>'
+        elements[1] = '<li>' + "confidence: " + receivedData.confidence + '</li>'
+        elements[2] = '<li>' + "irony: " + receivedData.irony + '</li>'
+        elements[3] = '<li>' + "model: " + receivedData.model + '</li>'
+        elements[4] = '<li>' + "score_tag: " + receivedData.score_tag + '</li>'
+        document.getElementById('results').innerHTML = start + elements + end;
     }
-    const response = await fetch(url, requestOptions);
-    console.log("res before .json use", response);
-    const objdata = await response.json();
-    console.log("after json use", objdata);
-    console.log("agreement needed", objdata.agreement);
-    document.getElementById('results').innerHTML = "this paragraph shows " + objdata.agreement;
+    else {
+        alert("invalid ");
+        document.getElementById('results').innerHTML = "  ";
+    }
+
+
+
+
+
+
+
 
 
 
 
 }
-
 
 export { handleSubmit }
 

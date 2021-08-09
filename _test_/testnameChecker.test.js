@@ -8,12 +8,13 @@ describe("Testing the nameChecker", () => {
         // Define the input for the function, if any, in the form of variables/array
         //has no input 
         // Define the expected output, if any, in the form of variables/array
-        let output = 0;
+        let output = 1;
+        let validUrl = "https://jamesclear.com/five-step-creative-process"
         // The expect() function, in combination with a Jest matcher, is used to check if the function produces the expected output
         //expected out put res.msg "ok"
         // console.log("output of function run", handleSubmit());
         // The general syntax is `expect(myFunction(arg1, arg2, ...)).toEqual(expectedValue);`, where `toEqual()` is a matcher
-        expect(checkForName()).toEqual(output);
+        expect(checkForName(validUrl)).toEqual(output);
         expect(checkForName).toBeDefined();
     })
 });
